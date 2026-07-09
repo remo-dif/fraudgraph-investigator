@@ -1,4 +1,5 @@
 .gradle/
+build/
 backend/build/
 frontend/dist/
 frontend/node_modules/

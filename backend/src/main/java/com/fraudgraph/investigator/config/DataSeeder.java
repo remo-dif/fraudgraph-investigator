@@ -4,12 +4,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataSeeder implements CommandLineRunner {
+    private static final Logger log = LoggerFactory.getLogger(DataSeeder.class);
     private final Neo4jClient neo4jClient;
 
     public DataSeeder(Neo4jClient neo4jClient) {
@@ -24,16 +27,26 @@ public class DataSeeder implements CommandLineRunner {
                 .one()
                 .orElse(0L);
         if (customers > 0) {
+            log.info("Neo4j seed data already exists; skipping seed loader");
             return;
         }
+        log.info("Seeding Neo4j demo data");
         createConstraints();
+        log.info("Seed constraints created");
         seedCustomers();
+        log.info("Seed customers created");
         seedAccountsCardsDevicesIps();
+        log.info("Seed accounts, cards, devices, and IP addresses created");
         seedMerchants();
+        log.info("Seed merchants created");
         seedTransactions();
+        log.info("Seed transactions created");
         seedSuspiciousTransferLoop();
+        log.info("Seed circular transfer loop created");
         seedAlertsAndCase();
+        log.info("Seed alerts and case created");
         seedHypergraphEvents();
+        log.info("Seed hypergraph events created");
     }
 
     private void createConstraints() {
@@ -278,7 +291,7 @@ public class DataSeeder implements CommandLineRunner {
                         MERGE (event:LoginEvent {id: 'login-event-' + account.id + '-' + device.id})
                         SET event.label = 'Login from ' + device.platform,
                             event.riskScore = coalesce(device.riskScore, 0),
-                            event.timestamp = datetime().toString()
+                            event.timestamp = toString(datetime())
                         WITH event, [account, device, ip] AS participants
                         UNWIND participants AS participant
                         MERGE (participant)-[:PARTICIPATED_IN]->(event)
