@@ -1,0 +1,7 @@
+.gradle/
+backend/build/
+frontend/dist/
+frontend/node_modules/
+*.log
+*.tsbuildinfo
+.env
