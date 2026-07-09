@@ -41,9 +41,8 @@ Runs on pull requests, pushes to `main`, and manual dispatch.
 
 Checks:
 
-- Dependency review for pull requests.
 - Trivy filesystem scan for high and critical vulnerabilities.
-- SARIF upload into GitHub code scanning.
+- The scan is intentionally run as a normal Docker command instead of SARIF upload so it works in private repositories without GitHub Advanced Security.
 
 ### Deploy
 
@@ -66,5 +65,6 @@ Inputs:
 
 - Add Playwright e2e tests and run them after the Compose smoke test.
 - Add container image scanning after image build.
+- Enable GitHub Advanced Security later if SARIF upload and dependency-review gating are desired.
 - Add deployment platform integration once hosting is chosen.
 - Add branch protection requiring `CI` to pass before merge.

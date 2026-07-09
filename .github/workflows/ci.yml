@@ -58,7 +58,7 @@ jobs:
           docker run --rm
           -v "${{ github.workspace }}:/workspace"
           -w /workspace
-          gradle:8.10.2-jdk21
+          gradle:8.14.3-jdk21
           gradle :backend:test --no-daemon
 
   compose:

@@ -80,13 +80,22 @@ public class DataSeeder implements CommandLineRunner {
                               id: $cardId, maskedPan: $maskedPan, network: $network,
                               status: $cardStatus, riskScore: $cardRisk
                             })
-                            MERGE (device:Device {
-                              id: $deviceId, fingerprint: $fingerprint, platform: $platform,
-                              riskScore: $deviceRisk, previouslySuspicious: $deviceSuspicious
-                            })
-                            MERGE (ip:IPAddress {
-                              id: $ipId, ip: $ip, country: $ipCountry, riskScore: $ipRisk
-                            })
+                            MERGE (device:Device {id: $deviceId})
+                            SET device.fingerprint = coalesce(device.fingerprint, $fingerprint),
+                                device.platform = coalesce(device.platform, $platform),
+                                device.riskScore = CASE
+                                    WHEN device.riskScore IS NULL OR device.riskScore < $deviceRisk THEN $deviceRisk
+                                    ELSE device.riskScore
+                                END,
+                                device.previouslySuspicious = coalesce(device.previouslySuspicious, false) OR $deviceSuspicious
+                            MERGE (ip:IPAddress {id: $ipId})
+                            SET ip.ip = coalesce(ip.ip, $ip),
+                                ip.country = coalesce(ip.country, $ipCountry),
+                                ip.riskScore = CASE
+                                    WHEN ip.riskScore IS NULL OR ip.riskScore < $ipRisk THEN $ipRisk
+                                    ELSE ip.riskScore
+                                END
+                            WITH account, card, device, ip
                             MATCH (customer:Customer {id: $customerId})
                             MERGE (customer)-[:OWNS]->(account)
                             MERGE (account)-[:USED]->(card)
@@ -152,6 +161,7 @@ public class DataSeeder implements CommandLineRunner {
                               channel: $channel, status: $status, occurredAt: $occurredAt,
                               riskScore: $riskScore
                             })
+                            WITH tx
                             MATCH (account:Account {id: $accountId})
                             MATCH (merchant:Merchant {id: $merchantId})
                             MERGE (account)-[:INITIATED]->(tx)
@@ -181,6 +191,7 @@ public class DataSeeder implements CommandLineRunner {
                           id: $id, type: 'TRANSFER', amount: $amount, currency: 'USD',
                           channel: 'web', status: 'SETTLED', occurredAt: $occurredAt, riskScore: 94
                         })
+                        WITH transfer
                         MATCH (source:Account {id: $from})
                         MATCH (target:Account {id: $to})
                         MERGE (source)-[:INITIATED]->(transfer)
@@ -208,6 +219,7 @@ public class DataSeeder implements CommandLineRunner {
                           riskScore: $score, description: $description, createdAt: $createdAt,
                           riskReasons: $riskReasons, recommendedActions: $recommendedActions
                         })
+                        WITH a
                         MATCH (tx:Transaction {id: $tx})
                         MERGE (a)-[:FLAGS]->(tx)
                         """)
