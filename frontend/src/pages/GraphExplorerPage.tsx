@@ -1,7 +1,7 @@
 import { RotateCcw, Search, UnfoldHorizontal } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { api } from "../api/client";
 import { EntityList } from "../components/EntityList";
 import { ErrorState } from "../components/ErrorState";

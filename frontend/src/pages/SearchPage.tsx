@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { api } from "../api/client";
 import { EntityList } from "../components/EntityList";
 import { PageHeader } from "../components/PageHeader";

@@ -1,5 +1,5 @@
 import { AlertTriangle, Gauge, GitFork, Network, Search } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import type { ReactNode } from "react";
 
 const navItems = [

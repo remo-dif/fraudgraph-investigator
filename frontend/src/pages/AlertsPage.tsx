@@ -1,6 +1,6 @@
 import { BriefcaseBusiness, RefreshCw } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { api } from "../api/client";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";

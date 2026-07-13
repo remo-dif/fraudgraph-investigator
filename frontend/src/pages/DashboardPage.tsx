@@ -1,6 +1,6 @@
 import { AlertOctagon, CircleDollarSign, Network, ShieldAlert } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { api } from "../api/client";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
