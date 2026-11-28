@@ -1,5 +1,7 @@
 # Current State Assessment
 
+Historical Phase 0 snapshot. For the post-preview branch, see [MVP status](mvp-status.md) and [Phase 0.3 reconciliation](architecture-reconciliation.md).
+
 Baseline: branch main, commit `2145aed`. No AGENTS.md or CLAUDE.md appeared in the checkout inventory. Existing architecture, security, testing and CI documents are historical context. The checked-in code determines current capabilities.
 
 | Area | Verified in the checkout | Reuse and limitations |

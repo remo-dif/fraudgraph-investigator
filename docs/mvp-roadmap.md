@@ -1,20 +1,25 @@
 # MVP Roadmap
 
-Phase 0 produces this baseline, proposed contract, target design and release gates. Each later phase should land in small reviewable PRs with ADRs for accepted decisions.
+The first milestone is one synthetic dataset, predefined CSV validation, isolated import, one typed exact search, bounded related events and entities, dated source evidence, minimal reproducible JSON export and scoped delete/revocation. Preserve the demo independently. See [status and deferrals](mvp-status.md).
 
-| Phase and scope | Dependencies and affected components | Acceptance and required tests | Security implications, risks and decisions |
-| --- | --- | --- | --- |
-| 1. Ingestion | Contract v1, Java CSV parser selection, `backend/.../dataset`, schema migrations, `frontend/src/features/datasets`, Compose profiles | Preview validates small synthetic CSV with explicit mapping and stable errors. Commit writes atomic provenance and idempotency records. Delete removes scoped records safely. Test parser limits, time/currency, duplicates, restart and deletion with Neo4j Testcontainers. | Introduce authentication and operation/ownership checks before enabling persistence. Decide parser, profile, limits and import transaction sizing. |
-| 2. Resolution and search | Scoped schema, `resolution`, `search`, existing graph DTO/React Flow components, TanStack Query | Search exact typed IDs with bounded paths, source rows, times and matching reasons. Test Cypher behavior, same IDs across datasets, legitimate shared infrastructure, hub bounds and authorisation. | Cap expansion and avoid weak-signal merges. Decide identifier normalization and ranking weights by type. |
-| 3. Clusters and exposure | Validated events and resolution, `cluster`, workspace timeline and exposure panel | Multi-identifier, beneficiary, coordinated participation and time-window rules reproduce expected clusters. Test synthetic precision/recall, duplicate events, mixed currencies, status buckets and overflow. | False positives and double counting are key risks. Decide window defaults, holdout fixtures and exposure taxonomy. |
-| 4. Evidence | Versioned graph results, `evidence`, investigation detail and export UI | An analyst saves notes and exports CSV/JSON with stable investigation ID, dataset version, source references, paths, rules, strength, timestamp, exposure and limitations. Test replay, CSV injection and access checks. | Decide snapshot lifetime and export storage policy. Minimise copied sensitive values. |
-| 5. Hardening and benchmarks | Integrated workflow, Compose and CI, Testcontainers and Playwright | Exercise import-to-delete E2E, permission and isolation failures, retention/restore, redaction and resource limits. Record throughput, disk, memory, search/traversal latency and cluster duration. | Verify all real-data gates. Decide retained metrics, supported Neo4j image and production resource budget. |
-| 6. Demo and deployment | Verified MVP, `README.md`, Compose production profile and synthetic fixture generator | Document setup, private VPS operation and rollback. A fresh Compose install completes the synthetic workflow and verifies expected paths and exports. | Separate demo credentials/data. Decide operational owner and retention schedule before real deployments. |
+| Increment | Scope | Gate |
+| --- | --- | --- |
+| 0.3 | Reconcile independent review and freeze the first workflow. | Approve the decisions and Phase 1A scope. |
+| 1A | Dataset boundary and persistence foundation. | Profiles and real Community integration tests prove ownership, keys and scoped storage. |
+| 1B | Fixed-template validation and atomic publication, retries, revocation and cleanup. | Concurrent idempotency, rollback and deletion tests. Real HTTP limits and measured synthetic import cap. |
+| 1C | Typed device lookup, bounded evidence, analyst UI and minimal JSON. | Query plans under skew and synthetic import-to-delete E2E. Demo smoke stays green. |
+| Pilot gate | Private deployment, verified secrets and actor provider, recovery and analyst evaluation. | Actual resource and restore results, secure ingress and independent access checks before customer data. |
 
-## Benchmark protocol
+## Phase 1A | Dataset Boundary and Persistence Foundation
 
-Use seeded fixtures with 1k, 10k and 50k events including legitimate shared devices, NAT and labelled synthetic clusters. Record commit, hardware, image versions, JVM and heap settings, row mix and cold/warm state. Capture import rows/sec, Neo4j volume delta, container peak memory, p50/p95 search and traversal over repeated fixed queries, and cluster wall time. Report synthetic ground-truth error rates and retain the generator seed. No benchmark results were collected in Phase 0.
+Objective: boot the import profile against its own Community instance and prove a minimal owned dataset/version graph write and scoped read through internal test fixtures. Example changed components are `application-demo.yml`, `application-import.yml`, profile registration for legacy controllers/seeder/security, `dataset/access`, `dataset/persistence`, versioned Cypher schema resources, backend Gradle integration test task and CI. Preserve the synthetic preview and existing demo smoke.
 
-## Smallest implementation increment
+Initialize the named Dataset, DatasetVersion and Event uniqueness constraints first. Add SourceNamespace, Account, Identifier and SourceObservation constraints with the first writes to those labels, as specified in ADR 0003. Keep write entry points internal and validate every key component and scope before parameter binding. Use restrictive import security, separate credentials and server-derived identity. The mandatory real database gate checks migration, key uniqueness, missing-key rejection, actor denial, overlapping IDs, wrong-scope edges, and rollback. Verify profile registration and fail-closed configuration independently.
 
-Start Phase 1 with a pure Java parser/validator and a checked-in synthetic fixture. Accept explicit mapping and return a bounded preview with normalized rows and row-indexed error codes. Test valid optional blanks, malformed CSV, byte and row caps, duplicate conflicts and timestamp/currency parsing. Keep the increment callable from tests without an HTTP endpoint or database writes. Add the authenticated preview endpoint and persistence only in later increments after review.
+Deliverable acceptance requires the isolated profile to boot, migrations to be rerunnable, the demo to keep its existing behavior and CI to fail if persistence verification is unavailable. No upload-to-database endpoint, new UI, full publication state machine, search, export, deletion API or VPS changes in this PR.
+
+Decisions to close in the PR: exact maintained Community image and driver combination, schema bootstrap mechanism, test identity wiring and enforcement of separate configuration. Community credential capabilities and cross-profile wiring need explicit negative tests. The smallest change is one internal repository transaction creating an owned dataset, version and event with integration tests against the dedicated instance.
+
+## Measurement
+
+Use seeded fixtures with increasing sizes and realistic skew, plus legitimate device and NAT reuse. Report host/image/heap, fixture seed, concurrency, import rows/sec, disk growth and peak heap/spool, rollback time, p50/p95 search and database hits. Determine limits from measured results. No benchmark result exists yet. Exposure, generalized resolution, clustering and advanced reports are outside this milestone.

@@ -1,5 +1,7 @@
 # Canonical CSV Contract v1 (Proposed)
 
+The initial imported-data milestone uses one predefined template and mapping. The existing synthetic preview still accepts an explicit mapping. Persistence limits and lifecycle are governed by [ADR 0004](adr/0004-import-publication.md). Financial totals are deferred pending authoritative amount and reversal linkage.
+
 One row per event. Accept UTF-8 comma-separated CSV with a single header, optional BOM and standard CSV quoting, parsed as data. Require explicit source-to-canonical mapping. Reject duplicate headers or mapping targets. Ignore unmapped columns and never execute cell content. Proposed starting limits are 10 MiB, 50,000 data rows, 64 columns and 256 characters per mapped scalar. Enforce transport and streaming limits independently.
 
 | Field | Validation and semantics |

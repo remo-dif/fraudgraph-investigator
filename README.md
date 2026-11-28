@@ -178,6 +178,10 @@ Add screenshots here after running locally:
 
 ## Architecture Documentation
 
+For investigative search, start with the [MVP status](docs/mvp-status.md), [target architecture](docs/target-architecture.md), [incremental roadmap](docs/mvp-roadmap.md), and [Phase 0.3 reconciliation](docs/architecture-reconciliation.md). The financial demo and authenticated synthetic preview are current capabilities. Imported-data persistence and its release gates are planned.
+
+The original architecture assessment, technical debt report and PR roadmap below describe the demo-era baseline.
+
 - [Architecture assessment](docs/architecture-assessment.md)
 - [Hypergraph investigation model](docs/hypergraph.md)
 - [ADR 0001: Event-centric hypergraph layer over Neo4j](docs/adr/0001-hypergraph-layer-over-neo4j.md)

@@ -1,26 +1,16 @@
-# Target Architecture
+# Target Architecture | Thin Synthetic MVP
 
-Preserve the Java/React modular monolith and Neo4j Community. Deploy on Compose behind a TLS reverse proxy, serving static frontend assets. Keep database ports private. The demo runs in a distinct profile and datastore from imported data.
+Keep the Spring Boot and React monolith, Neo4j Community and Compose. The first milestone is an isolated synthetic import-to-delete journey. Reuse Commons CSV, DTO conventions, TanStack Query and React Flow. Keep the financial demo usable in its own profile and datastore.
 
-```mermaid
-flowchart LR
-  UI["React analyst workspace"] --> API["Authenticated Spring Boot API"]
-  API --> I["Ingestion and dataset lifecycle"]
-  API --> S["Entity resolution and search"]
-  API --> C["Clusters and exposure"]
-  API --> E["Investigations and evidence export"]
-  I --> DB[("Neo4j Community")]
-  S --> DB
-  C --> DB
-  E --> DB
-```
+## Decisions
 
-Use feature packages `dataset`, `resolution`, `search`, `cluster`, `evidence` and shared access policy. Extend DTOs and reuse visualization components rather than exposing persistence nodes. Neo4j owns provenance, event links and analysis snapshots. Keep source files ephemeral and store only the canonical evidence needed for replay.
+- [ADR 0002](adr/0002-dataset-isolation.md) sets the physical boundary, profiles, authorization and cache scope.
+- [ADR 0003](adr/0003-versioned-evidence.md) defines scoped identity, constraints and provenance.
+- [ADR 0004](adr/0004-import-publication.md) defines atomic import, retries and deletion.
+- [ADR 0005](adr/0005-bounded-evidence-queries.md) defines the first investigative reads and budgets.
 
-- A Dataset owns Accounts, Events, typed Identifiers, Devices, NetworkIdentifiers, Beneficiaries and Campaigns. Scope every node and relationship endpoint to the dataset. Reuse the Account and event concepts while containing legacy queries in the demo. Use uniqueness constraints on dataset plus typed external ID, with indexed exact lookup. Verify Community support and use a unique deterministic scoped key if needed.
-- Represent participation with typed observed links such as INITIATED, OBSERVED_DEVICE, OBSERVED_NETWORK and PAID_TO. Keep Event as the hyperedge and separate source rows from derived evidence. Reward and Payout are financial event types for v1. Add a standalone Transaction only where the source identifies a distinct ledger record. Investigation and Evidence refer to immutable dataset version, source keys and rule version.
-- Resolve exact typed identifiers within dataset scope. Shared device or network identifiers yield reviewable links, never account merges. Deduplicate observations. Explain rankings with identifier type, rarity, independent signals and time proximity. Report ambiguous and truncated results explicitly.
-- Bound fan-out, depth, page size and server query duration before returning paths. Use versioned deterministic time-window and multi-identifier queries. No mandatory GDS. Consider it only after measured need and licensing review.
-- Aggregate canonical events once per analysis, in integer minor units with checked values and per-currency totals. Persist the matched event keys and rule parameters so results can be reproduced until deletion. Evidence exports are access-checked again at download.
+Imported-data requests flow through authentication, scope policy and dedicated repositories to a private instance. Use an event-centric graph, with source observations separate from derived associations and human conclusions. A fixed CSV template feeds the first version. Search one typed identifier, show dated source evidence and export an allowlisted JSON result with dataset version, query/rule version, source references, ordering and truncation. Generate exports on demand within the authorization boundary. Already downloaded copies are outside revocation.
 
-Draft ADR decisions for the implementation are dataset-scoped keys, event-based provenance and no cross-dataset links. Record accepted choices and migrations with Phase 1 once approved.
+Bound upload admission before multipart parsing, derive per-actor and global concurrency limits from heap and spool budgets, and use quota-limited private temporary storage with abort cleanup. Sanitize internal errors, minimize response fields and logs, and audit actor, action and opaque scope IDs. The current preview is synthetic-only. See [threat model](threat-model.md) for pilot gates.
+
+The [MVP status](mvp-status.md) describes what exists today. This document describes design decisions pending implementation.
