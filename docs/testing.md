@@ -1,5 +1,17 @@
 # Testing Strategy
 
+## Required imported-data gate (planned)
+
+Phase 1A introduces a separate required CI job on a Docker-capable runner using Neo4j Community Testcontainers, the pinned schema and real driver repositories. Run Gradle on the runner with Docker access. Missing Docker, no discovered tests, skipped tests and test failures must fail the job. Publish test reports. Keep existing parser, MockMvc and demo suites.
+
+| Phase | Mandatory behavior |
+| --- | --- |
+| 1A | Clean schema initialization and rerun, composite uniqueness, application missing-key rejection, scoped reads/writes, overlapping dataset IDs, mismatched relationship rejection, server-derived actor policy and anonymous/wrong-owner denial, transaction rollback. |
+| 1B | Concurrent identical imports, corrected version preservation, aborted import and retry, publication/delete races, revoked access and repeatable deletion. Embedded HTTP server tests verify real multipart limits, excess part count, malformed input, unauthorized admission, concurrent budgets and temporary file cleanup. |
+| 1C | Row/field/timestamp provenance, benign device and NAT fixtures, injected cross-scope edge exclusion, index seek plan, bounded hub, deadline/truncation and redacted output. E2E selects the synthetic fixture, validates and imports it, searches a device, asserts dated related evidence, downloads JSON, deletes and verifies search and export are revoked. |
+
+The existing sections below describe the demo test baseline and demo journey.
+
 ## Backend
 
 Current tests cover service composition and source-level query presence. The next quality step is behavior testing against Neo4j.

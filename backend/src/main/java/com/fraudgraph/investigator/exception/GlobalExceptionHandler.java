@@ -10,6 +10,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiError> uploadTooLarge() {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(new ApiError(
+                OffsetDateTime.now(), 413, "Upload too large", List.of()));
+    }
+
+    @ExceptionHandler(org.springframework.web.multipart.MultipartException.class)
+    public ResponseEntity<ApiError> invalidMultipart() {
+        return ResponseEntity.badRequest().body(new ApiError(
+                OffsetDateTime.now(), 400, "Invalid multipart request", List.of()));
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> notFound(NotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(

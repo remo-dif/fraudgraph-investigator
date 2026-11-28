@@ -1,5 +1,7 @@
 # Pull Request Roadmap
 
+Historical demo-era roadmap anchored to the initial portfolio implementation. The [MVP roadmap](mvp-roadmap.md) supersedes this sequencing for imported data.
+
 FraudGraph Investigator should evolve through small production-ready PRs. Each PR should compile, pass tests, and preserve local `docker compose up --build`.
 
 ## PR1: Architecture Assessment and ADRs
