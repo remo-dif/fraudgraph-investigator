@@ -7,6 +7,7 @@ import java.util.Map;
 import org.neo4j.driver.types.Node;
 import org.springframework.stereotype.Component;
 
+@org.springframework.context.annotation.Profile("demo")
 @Component
 public class HypergraphMapper {
     private final HypergraphRiskScorer riskScorer;

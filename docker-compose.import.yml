@@ -1,0 +1,28 @@
+services:
+  import-db:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: "neo4j/${IMPORT_NEO4J_PASSWORD:?Set dedicated Neo4j import password}"
+    volumes:
+      - imported-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p \"$${NEO4J_AUTH#*/}\" 'RETURN 1'"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  import-api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    depends_on:
+      import-db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: import
+      IMPORT_NEO4J_URI: bolt://import-db:7687
+      IMPORT_NEO4J_USERNAME: neo4j
+      IMPORT_NEO4J_PASSWORD: "${IMPORT_NEO4J_PASSWORD:?Set dedicated Neo4j import password}"
+    ports:
+      - "127.0.0.1:${IMPORT_API_PORT:-8081}:8080"
+volumes:
+  imported-data:

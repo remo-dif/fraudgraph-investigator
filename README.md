@@ -63,6 +63,18 @@ Open:
 
 Default Neo4j credentials are in `.env.example`.
 
+### Isolated import development profile
+
+The default `demo` profile includes the financial workspace and synthetic CSV preview. The `import` profile runs the internal persistence foundation against a separate Neo4j Community instance and volume. It denies HTTP requests and exposes no import persistence endpoint.
+
+Set a dedicated development `IMPORT_NEO4J_PASSWORD` in your shell or untracked `.env`, then run:
+
+```bash
+docker compose -p fraudgraph-import -f docker-compose.import.yml up --build
+```
+
+The import database has no published ports. The API binds to loopback on port 8081 by default. Keep the import Compose file separate from the demo file. Neither setup is approved to receive customer data.
+
 ## API Reference
 
 | Method | Path | Purpose |
@@ -141,6 +153,7 @@ Backend:
 
 ```bash
 gradle :backend:test
+gradle :backend:neo4jIntegrationTest --no-daemon
 ```
 
 Frontend:

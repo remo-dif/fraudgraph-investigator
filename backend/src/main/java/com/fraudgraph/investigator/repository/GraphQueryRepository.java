@@ -22,6 +22,7 @@ import org.neo4j.driver.types.Relationship;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
+@org.springframework.context.annotation.Profile("demo")
 @Repository
 public class GraphQueryRepository {
     private final Neo4jClient neo4jClient;

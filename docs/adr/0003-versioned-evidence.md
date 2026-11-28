@@ -1,6 +1,6 @@
 # ADR 0003 | Versioned Identity and Evidence
 
-Status: proposed. ADR 0001 remains historical context for the demo.
+Status: Phase 1A implements Dataset, DatasetVersion and Event constraints and scoped relationships. Other labels, provenance and corrected-import workflow remain planned. ADR 0001 remains historical context for the demo.
 
 | Node | Required unique key | Other required properties |
 | --- | --- | --- |

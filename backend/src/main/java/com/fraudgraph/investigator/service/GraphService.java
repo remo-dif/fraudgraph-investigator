@@ -4,6 +4,7 @@ import com.fraudgraph.investigator.dto.GraphDto;
 import com.fraudgraph.investigator.repository.GraphQueryRepository;
 import org.springframework.stereotype.Service;
 
+@org.springframework.context.annotation.Profile("demo")
 @Service
 public class GraphService {
     private final GraphQueryRepository graphQueryRepository;

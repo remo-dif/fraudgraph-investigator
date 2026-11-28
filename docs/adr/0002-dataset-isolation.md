@@ -1,6 +1,6 @@
 # ADR 0002 | Dataset Isolation
 
-Status: proposed implementation direction for Phase 1A.
+Status: Phase 1A implements profile and datastore separation with deny-by-default import HTTP. Internal tests inject a controlled Spring Security identity with DATASET_INTERNAL authority. No HTTP authentication provider issues that authority. The import Neo4j connection uses dedicated IMPORT_NEO4J_* settings and the private development Compose network. Pilot identity and credential privilege design remain open.
 
 Logical partitioning in one instance is operationally cheap, but routing mistakes, a broad credential or legacy reads could expose unrelated records. Use one dedicated Neo4j Community instance and volume per private imported-data deployment, separate from the demo instance. Avoid an instance per dataset within a single-customer installation. Within the import instance, enforce logical dataset/version boundaries as defense in depth. Community supports one standard user database per instance; Enterprise database separation and fine-grained privileges are not assumed. Document actual runtime/admin privileges before a pilot. [Neo4j databases](https://neo4j.com/docs/operations-manual/current/database-administration/standard-databases/)
 

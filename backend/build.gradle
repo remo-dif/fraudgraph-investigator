@@ -24,8 +24,23 @@ dependencies {
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.mockito:mockito-junit-jupiter"
+    testImplementation "org.testcontainers:neo4j"
 }
 
 tasks.named("test") {
     useJUnitPlatform()
+    exclude "**/*IntegrationTest.class"
+}
+
+tasks.register("neo4jIntegrationTest", Test) {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform()
+    include "**/*IntegrationTest.class"
+    filter { includeTestsMatching "*IntegrationTest" }
+    afterSuite { suite, result ->
+        if (suite.parent == null && (result.testCount == 0 || result.skippedTestCount != 0)) {
+            throw new GradleException("Mandatory Neo4j tests missing or skipped")
+        }
+    }
 }

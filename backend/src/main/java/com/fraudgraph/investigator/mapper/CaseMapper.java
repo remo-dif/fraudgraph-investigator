@@ -5,6 +5,7 @@ import com.fraudgraph.investigator.dto.CaseDto;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
+@org.springframework.context.annotation.Profile("demo")
 @Component
 public class CaseMapper {
     public CaseDto toDto(InvestigationCase investigationCase, List<String> alertIds) {

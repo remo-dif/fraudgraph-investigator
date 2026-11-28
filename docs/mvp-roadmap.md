@@ -5,12 +5,16 @@ The first milestone is one synthetic dataset, predefined CSV validation, isolate
 | Increment | Scope | Gate |
 | --- | --- | --- |
 | 0.3 | Reconcile independent review and freeze the first workflow. | Approve the decisions and Phase 1A scope. |
-| 1A | Dataset boundary and persistence foundation. | Profiles and real Community integration tests prove ownership, keys and scoped storage. |
+| 1A | Dataset boundary and persistence foundation implemented for review. | Separate profiles and mandatory real Community integration tests cover ownership, keys and scoped storage. |
 | 1B | Fixed-template validation and atomic publication, retries, revocation and cleanup. | Concurrent idempotency, rollback and deletion tests. Real HTTP limits and measured synthetic import cap. |
 | 1C | Typed device lookup, bounded evidence, analyst UI and minimal JSON. | Query plans under skew and synthetic import-to-delete E2E. Demo smoke stays green. |
 | Pilot gate | Private deployment, verified secrets and actor provider, recovery and analyst evaluation. | Actual resource and restore results, secure ingress and independent access checks before customer data. |
 
 ## Phase 1A | Dataset Boundary and Persistence Foundation
+
+Working branch: `feature/phase-1a-persistence-foundation`.
+
+PR title: `feat: phase 1A - dataset persistence foundation`.
 
 Objective: boot the import profile against its own Community instance and prove a minimal owned dataset/version graph write and scoped read through internal test fixtures. Example changed components are `application-demo.yml`, `application-import.yml`, profile registration for legacy controllers/seeder/security, `dataset/access`, `dataset/persistence`, versioned Cypher schema resources, backend Gradle integration test task and CI. Preserve the synthetic preview and existing demo smoke.
 
