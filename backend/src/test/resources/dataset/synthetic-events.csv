@@ -1,0 +1,4 @@
+member,source_event,kind,occurred,device,reward,currency
+0001,event-1,reward,2026-11-28T12:30:00+01:00,"device,shared",12.30,eur
+0002,event-2,activity,2026-11-28T12:35:00+01:00,"device,shared",,
+0001,event-1,reward,2026-11-28T12:30:00+01:00,"device,shared",12.30,eur
