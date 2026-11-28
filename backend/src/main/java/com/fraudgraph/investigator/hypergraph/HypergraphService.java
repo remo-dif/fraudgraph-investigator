@@ -3,6 +3,7 @@ package com.fraudgraph.investigator.hypergraph;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+@org.springframework.context.annotation.Profile("demo")
 @Service
 public class HypergraphService {
     private final HypergraphRepository repository;

@@ -5,6 +5,7 @@ import com.fraudgraph.investigator.repository.GraphQueryRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+@org.springframework.context.annotation.Profile("demo")
 @Service
 public class SearchService {
     private final GraphQueryRepository graphQueryRepository;

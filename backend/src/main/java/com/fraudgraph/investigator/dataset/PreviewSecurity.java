@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 class PreviewSecurity {
     @Bean
     @Order(1)
+    @org.springframework.context.annotation.Profile("demo")
     SecurityFilterChain datasetSecurity(HttpSecurity http,
                                         @Value("${fraudgraph.preview.token:}") String token) throws Exception {
         byte[] expected = token.getBytes(StandardCharsets.UTF_8);
@@ -51,9 +52,19 @@ class PreviewSecurity {
 
     @Bean
     @Order(2)
+    @org.springframework.context.annotation.Profile("demo")
     SecurityFilterChain demoSecurity(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(routes -> routes.anyRequest().permitAll())
+                .build();
+    }
+
+    @Bean
+    @Order(2)
+    @org.springframework.context.annotation.Profile("import")
+    SecurityFilterChain importSecurity(HttpSecurity http) throws Exception {
+        return http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(routes -> routes.anyRequest().denyAll())
                 .build();
     }
 }

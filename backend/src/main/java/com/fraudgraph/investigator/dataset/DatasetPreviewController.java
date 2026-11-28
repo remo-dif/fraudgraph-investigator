@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@org.springframework.context.annotation.Profile("demo")
 @RequestMapping("/api/datasets")
 class DatasetPreviewController {
     private final CsvPreviewValidator validator = new CsvPreviewValidator();

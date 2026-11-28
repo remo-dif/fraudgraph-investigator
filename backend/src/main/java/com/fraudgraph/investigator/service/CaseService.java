@@ -14,6 +14,7 @@ import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@org.springframework.context.annotation.Profile("demo")
 @Service
 public class CaseService {
     private static final List<String> DEFAULT_ACTIONS = List.of(

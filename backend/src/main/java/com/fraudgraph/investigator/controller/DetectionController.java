@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.context.annotation.Profile("demo")
 @RestController
 @RequestMapping("/api/detections")
 public class DetectionController {

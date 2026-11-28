@@ -1,8 +1,17 @@
 # Testing Strategy
 
-## Required imported-data gate (planned)
+## Required imported-data gate
 
-Phase 1A introduces a separate required CI job on a Docker-capable runner using Neo4j Community Testcontainers, the pinned schema and real driver repositories. Run Gradle on the runner with Docker access. Missing Docker, no discovered tests, skipped tests and test failures must fail the job. Publish test reports. Keep existing parser, MockMvc and demo suites.
+The `Neo4j Community integration` CI job runs the actual repository and two Community instances through Testcontainers. It executes before the existing demo smoke. Configure this job as a required status check in the repository ruleset. Reproduce locally with Java 21, Gradle 8.14.3 and an accessible Docker daemon:
+
+```bash
+docker info
+gradle :backend:test :backend:neo4jIntegrationTest --no-daemon
+docker compose config --quiet
+docker compose -p fraudgraph-import -f docker-compose.import.yml config --quiet
+```
+
+The import Compose validation requires a dedicated `IMPORT_NEO4J_PASSWORD`. Missing Docker, zero tests, skipped tests and failures fail CI. The real multipart and end-to-end ingestion journeys below remain planned.
 
 | Phase | Mandatory behavior |
 | --- | --- |

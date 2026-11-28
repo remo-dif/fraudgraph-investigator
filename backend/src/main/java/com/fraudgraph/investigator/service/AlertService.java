@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
+@org.springframework.context.annotation.Profile("demo")
 @Service
 public class AlertService {
     private final GraphQueryRepository graphQueryRepository;

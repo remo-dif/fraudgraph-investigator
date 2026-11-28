@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 
+@org.springframework.context.annotation.Profile("demo")
 @Component
 public class HypergraphPatternDetector {
     public List<SuspiciousHypergraphPatternDTO> detect(HypergraphDTO hypergraph) {

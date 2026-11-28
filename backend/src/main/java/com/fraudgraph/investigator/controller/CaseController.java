@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.context.annotation.Profile("demo")
 @RestController
 @RequestMapping("/api/cases")
 public class CaseController {

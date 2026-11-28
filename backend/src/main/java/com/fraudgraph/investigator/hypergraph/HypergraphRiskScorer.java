@@ -3,6 +3,7 @@ package com.fraudgraph.investigator.hypergraph;
 import java.util.Collection;
 import org.springframework.stereotype.Component;
 
+@org.springframework.context.annotation.Profile("demo")
 @Component
 public class HypergraphRiskScorer {
     public int scoreEdge(Collection<HyperNodeDTO> nodes, int baseRisk) {
